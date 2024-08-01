@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -19,4 +20,6 @@ public class Product {
     private LocalDate createAt;
 
     private boolean active;
+
+    private Set<UUID> offersIds;
 }

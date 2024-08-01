@@ -12,8 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Customer {
 
-    private UUID id;
-
     private String documentNumber;
 
     private String name;

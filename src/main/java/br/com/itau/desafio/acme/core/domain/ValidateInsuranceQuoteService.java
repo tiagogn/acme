@@ -10,7 +10,7 @@ public class ValidateInsuranceQuoteService {
     public void validate(InsuranceQuote insuranceQuote, Product product, Offer offer){
         validateProduct(product);
         validateOffer(offer);
-        validateInsuranceQuote(insuranceQuote);
+        validateInsuranceQuote(insuranceQuote, offer);
     }
 
     private void validateProduct(Product product) {
@@ -31,10 +31,10 @@ public class ValidateInsuranceQuoteService {
         }
     }
 
-    private void validateInsuranceQuote(InsuranceQuote insuranceQuote) {
-        this.validateCoverares(insuranceQuote, insuranceQuote.getOffer());
-        this.validateAssistance(insuranceQuote, insuranceQuote.getOffer());
-        this.validateTotalMonthlyPremiumAmount(insuranceQuote, insuranceQuote.getOffer());
+    private void validateInsuranceQuote(InsuranceQuote insuranceQuote, Offer offer) {
+        this.validateCoverares(insuranceQuote, offer);
+        this.validateAssistance(insuranceQuote, offer);
+        this.validateTotalMonthlyPremiumAmount(insuranceQuote, offer);
         this.validateTotalCoverageAmount(insuranceQuote);
     }
 
@@ -43,7 +43,7 @@ public class ValidateInsuranceQuoteService {
         Set<Coverage> coveragesInsuranceQuote = insuranceQuote.getCoverages();
 
         for (Coverage coverageInsuranceQuote : coveragesInsuranceQuote) {
-            Coverage coverageOffer = coveragesOffer.stream().filter(coverage -> coverage.getId().equals(coverageInsuranceQuote.getId()))
+            Coverage coverageOffer = coveragesOffer.stream().filter(coverage -> coverage.getName().equals(coverageInsuranceQuote.getName()))
                     .findFirst().orElseThrow(() -> new InsuranceQuoteException("Coverage not found in offer"));
             if (coverageOffer.getValue().compareTo(coverageInsuranceQuote.getValue()) < 0) {
                 throw new InsuranceQuoteException("Coverage value is greater than the offer");
@@ -55,14 +55,14 @@ public class ValidateInsuranceQuoteService {
         Set<Assistance> assistancesOffer = offer.getAssistances();
         Set<Assistance> assistancesInsuranceQuote = insuranceQuote.getAssistances();
 
-        if (!assistancesInsuranceQuote.containsAll(assistancesOffer)) {
+        if (!assistancesOffer.containsAll(assistancesInsuranceQuote)) {
             throw new InsuranceQuoteException("Assistance not found in offer");
         }
     }
 
     private void validateTotalMonthlyPremiumAmount(InsuranceQuote insuranceQuote, Offer offer){
-        if (insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMaxAmount()) < 1
-        && insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMinAmount()) > -1) {
+        if (insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMaxAmount()) > 0
+        && insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMinAmount()) < 0) {
             throw new InsuranceQuoteException("Total monthly premium amount is different from the offer");
         }
     }
@@ -70,7 +70,7 @@ public class ValidateInsuranceQuoteService {
     private void validateTotalCoverageAmount(InsuranceQuote insuranceQuote){
         var totalCoverageAmount = insuranceQuote.getCoverages().stream().map(Coverage::getValue)
                 .map(BigDecimal::doubleValue).reduce(Double::sum).orElse(0.0);
-        if (totalCoverageAmount > insuranceQuote.getTotalMonthlyPremiumAmount().doubleValue()) {
+        if (totalCoverageAmount > insuranceQuote.getTotalCoverageAmount().doubleValue()) {
             throw new InsuranceQuoteException("Total coverage amount is greater than the total monthly premium amount");
         }
     }

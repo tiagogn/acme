@@ -14,15 +14,17 @@ import java.util.UUID;
 @NoArgsConstructor
 public class InsuranceQuote {
 
-    private Long id;
+    private Integer id;
 
-    private UUID insuracePolicyId;
+    private Integer insurancePolicyId;
 
-    private Offer offer;
+    private UUID productId;
+
+    private UUID offerId;
 
     private Category category;
 
-    private LocalDateTime creaatedAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 

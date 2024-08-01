@@ -2,7 +2,6 @@ package br.com.itau.desafio.acme.core.application;
 
 import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteRepository;
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
-import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
 
 import java.util.UUID;
 
@@ -16,7 +15,11 @@ public class GetInsuranceQuote {
         this.insuranceQuoteRepository = insuranceQuoteRepository;
     }
 
-    public InsuranceQuote execute(UUID insurancePolicyId) {
-        return insuranceQuoteRepository.findByInsurancePolicyId(insurancePolicyId).orElseThrow(() -> new InsuranceQuoteException("Insurance Quote not found"));
+    public InsuranceQuote getByInsuranceId(UUID insurancePolicyId) {
+        return insuranceQuoteRepository.findByInsurancePolicyId(insurancePolicyId).orElse(null);
+    }
+
+    public InsuranceQuote getById(Long id) {
+        return insuranceQuoteRepository.findById(id).orElse(null);
     }
 }

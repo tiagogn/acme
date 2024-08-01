@@ -1,1 +1,26 @@
-spring.application.name=acme
+spring:
+  application:
+    name: acme
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE: true
+
+server:
+  servlet:
+    context-path: /acme
+    application-display-name: Acme
+
+app:
+  catalog-service:
+    url: https://0ed5e278-0ad4-40dd-9483-1edbb030d0f7.mock.pstmn.io

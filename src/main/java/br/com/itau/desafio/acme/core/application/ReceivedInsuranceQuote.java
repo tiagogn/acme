@@ -7,7 +7,9 @@ import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteReposi
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
 import br.com.itau.desafio.acme.core.domain.ValidateInsuranceQuoteService;
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ReceivedInsuranceQuote {
 
     private static final String INSURANCE_QUOTE_RECEIVED = "insuranceQuoteReceveid";
@@ -36,12 +38,16 @@ public class ReceivedInsuranceQuote {
 
     public void execute(InsuranceQuote insuranceQuote) throws InsuranceQuoteException {
 
-        var product = productGateway.getProductById(insuranceQuote.getOffer().getProductId());
-        var offer = offerGateway.getOfferById(insuranceQuote.getOffer().getId());
+        var product = productGateway.getProductById(insuranceQuote.getProductId());
+        log.info("Product: {}", product);
+
+        var offer = offerGateway.getOfferById(insuranceQuote.getOfferId());
+        log.info("Offer: {}", offer);
 
         validateInsuranceQuoteService.validate(insuranceQuote, product, offer);
 
         insuranceQuoteRepository.save(insuranceQuote);
-        queue.publish(INSURANCE_QUOTE_RECEIVED, insuranceQuote);
+
+        //queue.publish(INSURANCE_QUOTE_RECEIVED, insuranceQuote);
     }
 }
