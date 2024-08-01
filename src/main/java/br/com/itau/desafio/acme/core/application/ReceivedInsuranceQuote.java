@@ -38,6 +38,10 @@ public class ReceivedInsuranceQuote {
 
     public void execute(InsuranceQuote insuranceQuote) throws InsuranceQuoteException {
 
+        if (insuranceQuoteRepository.existsByProductIdAndOfferIdAndCustomerDocument(insuranceQuote.getProductId(),
+                insuranceQuote.getOfferId(), insuranceQuote.getCustomer().getDocumentNumber()))
+            throw new InsuranceQuoteException("Insurance quote already exists");
+
         var product = productGateway.getProductById(insuranceQuote.getProductId());
         log.info("Product: {}", product);
 
