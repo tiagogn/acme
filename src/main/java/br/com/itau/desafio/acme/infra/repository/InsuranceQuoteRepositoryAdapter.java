@@ -1,9 +1,7 @@
 package br.com.itau.desafio.acme.infra.repository;
 
 import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteRepository;
-import br.com.itau.desafio.acme.core.domain.*;
-import br.com.itau.desafio.acme.infra.entity.CoverageEntity;
-import br.com.itau.desafio.acme.infra.entity.CustomerEntity;
+import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
 import br.com.itau.desafio.acme.infra.entity.InsuranceQuoteEntity;
 import br.com.itau.desafio.acme.infra.repository.mapper.InsuranceQuoteEntityMapper;
 import jakarta.persistence.EntityManager;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Repository
 @Qualifier("insuranceQuoteRepository")
@@ -30,11 +27,14 @@ public class InsuranceQuoteRepositoryAdapter implements InsuranceQuoteRepository
 
     @Override
     public void save(InsuranceQuote insuranceQuote) {
-        entityManager.persist(insuranceQuoteEntityMapper.toEntity(insuranceQuote));
+        if (insuranceQuote.getId() != null)
+            entityManager.merge(insuranceQuoteEntityMapper.toEntity(insuranceQuote));
+        else
+            entityManager.persist(insuranceQuoteEntityMapper.toEntity(insuranceQuote));
     }
 
     @Override
-    public Optional<InsuranceQuote> findById(Long id) {
+    public Optional<InsuranceQuote> findById(Integer id) {
         var insuranceQuoteEntity = entityManager.createQuery("SELECT i FROM InsuranceQuoteEntity i WHERE i.id = :id", InsuranceQuoteEntity.class)
                 .setParameter("id", id)
                 .getResultStream()

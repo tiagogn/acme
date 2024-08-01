@@ -37,6 +37,7 @@ public class InsuranceQuoteEntity {
     private String category;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

@@ -27,4 +27,6 @@ app:
   rabbit:
     insurance-quote:
       queue: insurance-quote.received
+    insurance-policy:
+      queue: insurance-policy.issued
 

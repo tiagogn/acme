@@ -2,13 +2,12 @@ package br.com.itau.desafio.acme.core.application;
 
 import br.com.itau.desafio.acme.core.application.gateway.OfferGateway;
 import br.com.itau.desafio.acme.core.application.gateway.ProductGateway;
-import br.com.itau.desafio.acme.core.application.queue.Queue;
+import br.com.itau.desafio.acme.core.application.queue.InsuranceQuoteQueue;
 import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteRepository;
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
 import br.com.itau.desafio.acme.core.domain.ValidateInsuranceQuoteService;
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 @Slf4j
 public class ReceivedInsuranceQuote {
@@ -19,20 +18,20 @@ public class ReceivedInsuranceQuote {
 
     private final InsuranceQuoteRepository insuranceQuoteRepository;
 
-    private final Queue<InsuranceQuote> queue;
+    private final InsuranceQuoteQueue insuranceQuoteQueue;
 
     private final ValidateInsuranceQuoteService validateInsuranceQuoteService = new ValidateInsuranceQuoteService();
 
     public ReceivedInsuranceQuote(
             OfferGateway offerGateway,
             ProductGateway productGateway,
-            Queue<InsuranceQuote> queue,
+            InsuranceQuoteQueue insuranceQuoteQueue,
             InsuranceQuoteRepository insuranceQuoteRepository
     ) {
         this.offerGateway = offerGateway;
         this.productGateway = productGateway;
         this.insuranceQuoteRepository = insuranceQuoteRepository;
-        this.queue = queue;
+        this.insuranceQuoteQueue = insuranceQuoteQueue;
     }
 
     public void execute(InsuranceQuote insuranceQuote) throws InsuranceQuoteException {
@@ -51,6 +50,6 @@ public class ReceivedInsuranceQuote {
 
         insuranceQuoteRepository.save(insuranceQuote);
 
-        queue.publish(insuranceQuote);
+        insuranceQuoteQueue.publish(insuranceQuote);
     }
 }

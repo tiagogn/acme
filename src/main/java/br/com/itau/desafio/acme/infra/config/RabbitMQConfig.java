@@ -15,17 +15,20 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Value("${app.rabbit.insurance-quote.queue}")
-    private String queueName;
+    private String insuranceQuoteQueue;
+
+    @Value("${app.rabbit.insurance-policy.queue}")
+    private String insurancePolicyQueue;
 
     @Bean
     public Queue queue() {
-        return new Queue(queueName, true);
+        return new Queue(insuranceQuoteQueue, true);
     }
 
     @Bean
     public Exchange exchange() {
         return ExchangeBuilder
-                .directExchange(queueName)
+                .directExchange(insuranceQuoteQueue)
                 .durable(true)
                 .build();
     }
@@ -35,8 +38,13 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(queue())
                 .to(exchange())
-                .with(queueName)
+                .with(insuranceQuoteQueue)
                 .noargs();
+    }
+
+    @Bean
+    public Queue insurancePolicyQueue() {
+        return new Queue(insurancePolicyQueue, true);
     }
 
     @Bean

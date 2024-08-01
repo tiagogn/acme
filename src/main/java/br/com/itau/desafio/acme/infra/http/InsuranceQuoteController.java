@@ -34,7 +34,7 @@ public class InsuranceQuoteController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<InsuranceQuoteResponse> getInsuranceQuote(@PathVariable(required = true) Long id) {
+    public ResponseEntity<InsuranceQuoteResponse> getInsuranceQuote(@PathVariable(required = true) Integer id) {
         log.info("Get insurance quote by id: {}", id);
         InsuranceQuote insuranceQuote = getInsuranceQuote.getById(id);
         if (insuranceQuote == null)

@@ -2,12 +2,13 @@ package br.com.itau.desafio.acme.infra.config;
 
 import br.com.itau.desafio.acme.core.application.GetInsuranceQuote;
 import br.com.itau.desafio.acme.core.application.ReceivedInsuranceQuote;
+import br.com.itau.desafio.acme.core.application.UpdateInsuranceQuoteByPolice;
 import br.com.itau.desafio.acme.core.application.gateway.OfferGateway;
 import br.com.itau.desafio.acme.core.application.gateway.ProductGateway;
-import br.com.itau.desafio.acme.core.application.queue.Queue;
+import br.com.itau.desafio.acme.core.application.queue.InsuranceQuoteQueue;
 import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteRepository;
-import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
-import org.springframework.beans.factory.annotation.Value;
+import br.com.itau.desafio.acme.infra.queue.InsuranceQuoteQueueAdapter;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,31 +19,28 @@ public class ConfigBeans {
 
     private final OfferGateway offerGateway;
 
-    private final Queue<InsuranceQuote> queue;
-
     private final InsuranceQuoteRepository insuranceQuoteRepository;
 
-    @Value("${app.catalog-service.url}")
-    private String baseUrl;
+    private final RabbitTemplate rabbitTemplate;
 
     public ConfigBeans(
             ProductGateway productGateway,
             OfferGateway offerGateway,
-            Queue<InsuranceQuote> queue,
-            InsuranceQuoteRepository insuranceQuoteRepository
+            InsuranceQuoteRepository insuranceQuoteRepository,
+            RabbitTemplate rabbitTemplate
     ) {
         this.productGateway = productGateway;
         this.offerGateway = offerGateway;
-        this.queue = queue;
         this.insuranceQuoteRepository = insuranceQuoteRepository;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Bean
-    public ReceivedInsuranceQuote receivedInsuranceQuote() {
+    public ReceivedInsuranceQuote receivedInsuranceQuote () {
         return new ReceivedInsuranceQuote(
                 offerGateway,
                 productGateway,
-                queue,
+                insuranceQuoteQueue(),
                 insuranceQuoteRepository
         );
     }
@@ -51,6 +49,21 @@ public class ConfigBeans {
     public GetInsuranceQuote getInsuranceQuote() {
         return new GetInsuranceQuote(
                 insuranceQuoteRepository
+        );
+    }
+
+    @Bean
+    public UpdateInsuranceQuoteByPolice updateInsuranceQuoteByPolice() {
+        return new UpdateInsuranceQuoteByPolice(
+                insuranceQuoteRepository
+        );
+    }
+
+    @Bean
+    public InsuranceQuoteQueue insuranceQuoteQueue() {
+        return new InsuranceQuoteQueueAdapter(
+                rabbitTemplate,
+                updateInsuranceQuoteByPolice()
         );
     }
 

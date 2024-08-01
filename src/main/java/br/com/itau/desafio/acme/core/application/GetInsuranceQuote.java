@@ -19,7 +19,7 @@ public class GetInsuranceQuote {
         return insuranceQuoteRepository.findByInsurancePolicyId(insurancePolicyId).orElse(null);
     }
 
-    public InsuranceQuote getById(Long id) {
+    public InsuranceQuote getById(Integer id) {
         return insuranceQuoteRepository.findById(id).orElse(null);
     }
 }
