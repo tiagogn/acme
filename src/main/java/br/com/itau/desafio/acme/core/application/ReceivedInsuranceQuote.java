@@ -8,11 +8,10 @@ import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
 import br.com.itau.desafio.acme.core.domain.ValidateInsuranceQuoteService;
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 @Slf4j
 public class ReceivedInsuranceQuote {
-
-    private static final String INSURANCE_QUOTE_RECEIVED = "insuranceQuoteReceveid";
 
     private final OfferGateway offerGateway;
 
@@ -52,6 +51,6 @@ public class ReceivedInsuranceQuote {
 
         insuranceQuoteRepository.save(insuranceQuote);
 
-        //queue.publish(INSURANCE_QUOTE_RECEIVED, insuranceQuote);
+        queue.publish(insuranceQuote);
     }
 }

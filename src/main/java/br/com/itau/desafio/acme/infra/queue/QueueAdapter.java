@@ -2,32 +2,35 @@ package br.com.itau.desafio.acme.infra.queue;
 
 import br.com.itau.desafio.acme.core.application.queue.Queue;
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Qualifier("queue")
+@Slf4j
 public class QueueAdapter implements Queue<InsuranceQuote> {
 
-    /*private final RabbitTemplate rabbitTemplate;
+    @Value("${app.rabbit.insurance-quote.queue}")
+    private String queueName;
 
-    private final String exchange;
+    private final RabbitTemplate rabbitTemplate;
 
-    private final String routingKey;
-
-    public QueueAdapter(RabbitTemplate rabbitTemplate, String exchange, String routingKey) {
+    public QueueAdapter(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        this.exchange = exchange;
-        this.routingKey = routingKey;
-    }*/
-
-    @Override
-    public void publish(String queue, InsuranceQuote message) {
-
     }
 
     @Override
-    public void receive(String queue, InsuranceQuote message) {
+    public void publish(InsuranceQuote message) {
+        rabbitTemplate.convertAndSend(queueName, message);
+        log.info("Message published: {}", message);
+    }
+
+    @Override
+    public void receive(InsuranceQuote message) {
 
     }
+
 }

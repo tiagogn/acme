@@ -53,7 +53,7 @@ public class InsuranceQuoteEntity {
     @CollectionTable(name = "insurance_quote_assistances", joinColumns = @JoinColumn(name = "insurance_quote_id"))
     private Set<String> assistances = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customerEntity;
 }

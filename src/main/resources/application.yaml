@@ -24,3 +24,7 @@ server:
 app:
   catalog-service:
     url: https://0ed5e278-0ad4-40dd-9483-1edbb030d0f7.mock.pstmn.io
+  rabbit:
+    insurance-quote:
+      queue: insurance-quote.received
+

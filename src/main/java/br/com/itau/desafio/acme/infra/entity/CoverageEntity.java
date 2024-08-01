@@ -19,7 +19,7 @@ public class CoverageEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "insurance_quote_id", nullable = false)
     private InsuranceQuoteEntity insuranceQuoteEntity;
 
