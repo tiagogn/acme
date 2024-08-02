@@ -1,6 +1,5 @@
 package br.com.itau.desafio.acme.infra.queue;
 
-import br.com.itau.desafio.acme.core.application.UpdateInsuranceQuoteByPolice;
 import br.com.itau.desafio.acme.core.application.queue.InsuranceQuoteQueue;
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
 import br.com.itau.desafio.acme.core.dto.InsurancePolicyIssued;
@@ -9,9 +8,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.function.Consumer;
+
 @Slf4j
 public class InsuranceQuoteQueueAdapter implements InsuranceQuoteQueue {
 
@@ -20,9 +19,9 @@ public class InsuranceQuoteQueueAdapter implements InsuranceQuoteQueue {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final UpdateInsuranceQuoteByPolice updateInsuranceQuoteByPolice;
+    private final Consumer<InsurancePolicyIssued> updateInsuranceQuoteByPolice;
 
-    public InsuranceQuoteQueueAdapter(RabbitTemplate rabbitTemplate, UpdateInsuranceQuoteByPolice updateInsuranceQuoteByPolice) {
+    public InsuranceQuoteQueueAdapter(RabbitTemplate rabbitTemplate, Consumer<InsurancePolicyIssued> updateInsuranceQuoteByPolice) {
         this.rabbitTemplate = rabbitTemplate;
         this.updateInsuranceQuoteByPolice = updateInsuranceQuoteByPolice;
     }
@@ -40,7 +39,7 @@ public class InsuranceQuoteQueueAdapter implements InsuranceQuoteQueue {
         log.info("Message received from Policy Issued: {}", insurancePolicyIssued);
 
         try {
-            updateInsuranceQuoteByPolice.execute(insurancePolicyIssued);
+            updateInsuranceQuoteByPolice.accept(insurancePolicyIssued);
             log.info("Insurance Quote updated by police: {}", insurancePolicyIssued);
         } catch (Exception e) {
             log.error("Error to update insurance quote by police: {}", e.getMessage());
