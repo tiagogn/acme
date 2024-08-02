@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class Offer {
 
     private String name;
 
-    private LocalDate createAt;
+    private LocalDateTime createdAt;
 
     private boolean active;
 

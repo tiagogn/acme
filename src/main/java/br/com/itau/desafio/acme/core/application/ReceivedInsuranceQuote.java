@@ -36,20 +36,25 @@ public class ReceivedInsuranceQuote {
 
     public void execute(InsuranceQuote insuranceQuote) throws InsuranceQuoteException {
 
+        log.info("Received Insurance Quote: {}", insuranceQuote);
+
         if (insuranceQuoteRepository.existsByProductIdAndOfferIdAndCustomerDocument(insuranceQuote.getProductId(),
                 insuranceQuote.getOfferId(), insuranceQuote.getCustomer().getDocumentNumber()))
             throw new InsuranceQuoteException("Insurance quote already exists");
 
         var product = productGateway.getProductById(insuranceQuote.getProductId());
-        log.info("Product: {}", product);
+        log.info("Product from ProductAPI: {}", product);
 
         var offer = offerGateway.getOfferById(insuranceQuote.getOfferId());
-        log.info("Offer: {}", offer);
+        log.info("Offer from OfferAPI: {}", offer);
 
         validateInsuranceQuoteService.validate(insuranceQuote, product, offer);
+        log.info("Insurance Quote validated: {}", insuranceQuote);
 
         insuranceQuoteRepository.save(insuranceQuote);
+        log.info("Insurance Quote saved: {}", insuranceQuote);
 
         insuranceQuoteQueue.publish(insuranceQuote);
+        log.info("Insurance Quote published: {}", insuranceQuote);
     }
 }

@@ -66,5 +66,4 @@ public class ConfigBeans {
                 updateInsuranceQuoteByPolice()::execute
         );
     }
-
 }

@@ -5,44 +5,77 @@ import br.com.itau.desafio.acme.core.domain.Assistance;
 import br.com.itau.desafio.acme.core.domain.Coverage;
 import br.com.itau.desafio.acme.core.domain.MonthlyPremiumAmount;
 import br.com.itau.desafio.acme.core.domain.Offer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Qualifier("offerGateway")
+@Slf4j
 public class OfferGatewayAdapter implements OfferGateway {
 
     @Value("${app.catalog-service.url}")
     private String baseUrl;
 
-    private final RestClient restClient = RestClient.builder()
-            .messageConverters(converters -> new MappingJackson2HttpMessageConverter())
-            .build();
+    private final RestClient restClient = RestClient.create();
 
     @Override
     public Offer getOfferById(UUID id) {
-        return new Offer(
-                UUID.fromString("adc56d77-348c-4bf0-908f-22d402ee715c"),
-                UUID.fromString("1b2da7cc-b367-4196-8a78-9cfeec21f587"),
-                "Seguro de Vida Familiar",
-                LocalDate.now(),
-                true,
-                Set.of(new Coverage("Incêndio", 500000.00),
-                        new Coverage("Desastres naturais", 600000.00),
-                        new Coverage("Responsabiliadade civil", 80000.00),
-                        new Coverage("Roubo", 100000.00)),
-                Set.of(new Assistance("Encanador"),
-                        new Assistance("Eletricista"),
-                        new Assistance("Chaveiro 24h"),
-                        new Assistance("Assistência Funerária")),
-                new MonthlyPremiumAmount(100.74, 50.00, 60.25)
-        );
+        var offerResponse = restClient.get()
+                .uri(baseUrl + "/offer/" + id)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    log.error("Offer {} not found", id);
+                })
+                .body(OfferResponse.class);
+
+        return offerResponse == null ? null : offerResponse.toOffer();
+    }
+
+    record OfferResponse(
+            UUID id,
+            UUID product_id,
+            String name,
+            LocalDateTime created_at,
+            boolean active,
+            Map<String, Double> coverages,
+            Set<String> assistances,
+            MonthlyPremiumAmountResponse monthly_premium_amount
+    ){
+        public Offer toOffer(){
+            return new Offer(
+                    id(),
+                    product_id(),
+                    name(),
+                    created_at(),
+                    this.active,
+                    coverages().entrySet().stream()
+                            .map(entry -> new Coverage(entry.getKey(), entry.getValue()))
+                            .collect(Collectors.toSet()),
+                    assistances().stream()
+                            .map(Assistance::new)
+                            .collect(Collectors.toSet()),
+                    monthly_premium_amount().toMonthlyPremiumAmount()
+            );
+        }
+    }
+
+    record MonthlyPremiumAmountResponse(
+            double max_amount,
+            double min_amount,
+            double suggested_amount
+    ){
+        public MonthlyPremiumAmount toMonthlyPremiumAmount(){
+            return new MonthlyPremiumAmount(max_amount(), min_amount(), suggested_amount());
+        }
     }
 }

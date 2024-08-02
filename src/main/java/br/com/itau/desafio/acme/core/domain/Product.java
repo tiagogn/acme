@@ -17,9 +17,9 @@ public class Product {
 
     private String name;
 
-    private LocalDate createAt;
+    private LocalDate created_at;
 
     private boolean active;
 
-    private Set<UUID> offersIds;
+    private Set<UUID> offers;
 }

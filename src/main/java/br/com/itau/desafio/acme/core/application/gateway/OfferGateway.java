@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface OfferGateway {
 
-    public Offer getOfferById(UUID id);
+    Offer getOfferById(UUID id);
 }

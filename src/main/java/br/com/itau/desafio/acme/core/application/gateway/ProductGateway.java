@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface ProductGateway {
 
-    public Product getProductById(UUID id);
+    Product getProductById(UUID id);
 }
