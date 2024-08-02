@@ -63,7 +63,7 @@ public class ConfigBeans {
     public InsuranceQuoteQueue insuranceQuoteQueue() {
         return new InsuranceQuoteQueueAdapter(
                 rabbitTemplate,
-                updateInsuranceQuoteByPolice()
+                updateInsuranceQuoteByPolice()::execute
         );
     }
 

@@ -15,3 +15,13 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+  mockServer:
+    image: mockserver/mockserver:5.14.0
+    ports:
+      - 3000:1080
+    environment:
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: "true"
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializationJson.json
+    volumes:
+      - ./mockserver/initializationJson.json:/config/initializationJson.json
