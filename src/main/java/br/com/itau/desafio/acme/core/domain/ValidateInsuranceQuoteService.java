@@ -68,9 +68,8 @@ public class ValidateInsuranceQuoteService {
     }
 
     private void validateTotalCoverageAmount(InsuranceQuote insuranceQuote){
-        var totalCoverageAmount = insuranceQuote.getCoverages().stream().map(Coverage::getValue)
-                .map(BigDecimal::doubleValue).reduce(Double::sum).orElse(0.0);
-        if (totalCoverageAmount > insuranceQuote.getTotalCoverageAmount().doubleValue()) {
+        var totalCoverageAmount = insuranceQuote.getTotalSumOfCoverage();
+        if (totalCoverageAmount.compareTo(insuranceQuote.getTotalCoverageAmount()) != 0) {
             throw new InsuranceQuoteException("Total coverage amount is greater than the total monthly premium amount");
         }
     }

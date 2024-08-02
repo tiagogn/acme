@@ -37,4 +37,8 @@ public class InsuranceQuote {
     private Set<Assistance> assistances;
 
     private Customer customer;
+
+    public BigDecimal getTotalSumOfCoverage() {
+        return this.coverages.stream().map(Coverage::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
