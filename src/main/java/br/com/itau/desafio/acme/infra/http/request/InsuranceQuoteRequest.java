@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public record InsuranceQuoteRequest(
         double total_monthly_premium_amount,
         double total_coverage_amount,
         @JsonProperty("coverages")
-        HashMap<String, Double> coverages,
+        Map<String, Double> coverages,
         @JsonProperty("assistances")
         Set<String> assistances,
         CustomerRequest customer
