@@ -27,10 +27,17 @@ public class InsuranceQuoteRepositoryAdapter implements InsuranceQuoteRepository
 
     @Override
     public void save(InsuranceQuote insuranceQuote) {
-        if (insuranceQuote.getId() != null)
-            entityManager.merge(insuranceQuoteEntityMapper.toEntity(insuranceQuote));
-        else
-            entityManager.persist(insuranceQuoteEntityMapper.toEntity(insuranceQuote));
+        InsuranceQuoteEntity entity = insuranceQuoteEntityMapper.toEntity(insuranceQuote);
+        if (entity.getId() != null) {
+            entityManager.merge(entity);
+            insuranceQuote.setUpdatedAt(entity.getUpdatedAt());
+        }
+        else {
+            entityManager.persist(entity);
+            insuranceQuote.setId(entity.getId());
+            insuranceQuote.setCreatedAt(entity.getCreatedAt());
+            insuranceQuote.setUpdatedAt(entity.getUpdatedAt());
+        }
     }
 
     @Override

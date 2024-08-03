@@ -1,11 +1,7 @@
 package br.com.itau.desafio.acme.core.domain;
 
 import br.com.itau.desafio.acme.AcmeApplicationTests;
-import br.com.itau.desafio.acme.core.application.gateway.OfferGateway;
-import br.com.itau.desafio.acme.core.application.gateway.ProductGateway;
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
-import br.com.itau.desafio.acme.infra.gateway.OfferGatewayAdapterInMemory;
-import br.com.itau.desafio.acme.infra.gateway.ProductGatewayAdapterInMemory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +10,6 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 public class ValidateInsuranceQuoteServiceTest extends AcmeApplicationTests {
-
-    private final ProductGateway productGateway = new ProductGatewayAdapterInMemory();
-
-    private final OfferGateway offerGateway = new OfferGatewayAdapterInMemory();
 
     @Test
     @DisplayName("Should validate product is null")

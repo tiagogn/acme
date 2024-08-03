@@ -50,7 +50,9 @@ public class InsuranceQuoteEntityMapper {
                 customer.getPhoneNumber()
         );
 
-        insuranceQuoteEntity.setId(insuranceQuote.getId());
+        if (insuranceQuote.getId() != null && insuranceQuote.getId() > 0)
+            insuranceQuoteEntity.setId(insuranceQuote.getId());
+
         insuranceQuoteEntity.setInsurancePolicyId(insuranceQuote.getInsurancePolicyId());
         insuranceQuoteEntity.setProductId(insuranceQuote.getProductId());
         insuranceQuoteEntity.setOfferId(insuranceQuote.getOfferId());
