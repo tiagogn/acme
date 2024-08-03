@@ -3,7 +3,7 @@ package br.com.itau.desafio.acme.core.application;
 import br.com.itau.desafio.acme.AcmeApplicationTests;
 import br.com.itau.desafio.acme.core.application.repository.InsuranceQuoteRepository;
 import br.com.itau.desafio.acme.core.domain.InsuranceQuote;
-import br.com.itau.desafio.acme.core.domain.InsuranceQuoteFactory;
+import br.com.itau.desafio.acme.core.domain.factory.InsuranceQuoteFactory;
 import br.com.itau.desafio.acme.core.dto.InsurancePolicyIssued;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

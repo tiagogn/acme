@@ -1,4 +1,9 @@
-package br.com.itau.desafio.acme.core.domain;
+package br.com.itau.desafio.acme.core.domain.factory;
+
+import br.com.itau.desafio.acme.core.domain.Assistance;
+import br.com.itau.desafio.acme.core.domain.Coverage;
+import br.com.itau.desafio.acme.core.domain.MonthlyPremiumAmount;
+import br.com.itau.desafio.acme.core.domain.Offer;
 
 import java.time.LocalDateTime;
 import java.util.Set;

@@ -1,6 +1,9 @@
 package br.com.itau.desafio.acme.core.domain;
 
 import br.com.itau.desafio.acme.AcmeApplicationTests;
+import br.com.itau.desafio.acme.core.domain.factory.InsuranceQuoteFactory;
+import br.com.itau.desafio.acme.core.domain.factory.OfferFactory;
+import br.com.itau.desafio.acme.core.domain.factory.ProductFactory;
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

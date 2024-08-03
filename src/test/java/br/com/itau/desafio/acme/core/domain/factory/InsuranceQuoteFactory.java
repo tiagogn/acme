@@ -1,4 +1,6 @@
-package br.com.itau.desafio.acme.core.domain;
+package br.com.itau.desafio.acme.core.domain.factory;
+
+import br.com.itau.desafio.acme.core.domain.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

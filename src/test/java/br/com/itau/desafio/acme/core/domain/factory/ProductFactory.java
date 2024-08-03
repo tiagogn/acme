@@ -1,4 +1,6 @@
-package br.com.itau.desafio.acme.core.domain;
+package br.com.itau.desafio.acme.core.domain.factory;
+
+import br.com.itau.desafio.acme.core.domain.Product;
 
 import java.time.LocalDate;
 import java.util.Set;
