@@ -15,8 +15,8 @@ create table insurance_quote(
     product_id uuid not null,
     offer_id uuid not null,
     category text not null,
-    created_at timestamp not null default now(),
-    updated_at timestamp not null default now(),
+    created_at timestamp not null,
+    updated_at timestamp not null,
     total_monthly_premium_amount numeric(10, 2) not null,
     total_coverage_amount numeric(10, 2) not null,
     customer_id uuid not null

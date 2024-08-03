@@ -24,9 +24,9 @@ public class InsuranceQuote {
 
     private Category category;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     private BigDecimal totalMonthlyPremiumAmount;
 

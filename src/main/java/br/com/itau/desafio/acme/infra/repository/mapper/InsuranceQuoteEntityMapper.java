@@ -68,6 +68,8 @@ public class InsuranceQuoteEntityMapper {
                 .collect(Collectors.toSet()));
 
         insuranceQuoteEntity.setCustomerEntity(customerEntity);
+        insuranceQuoteEntity.setCreatedAt(insuranceQuote.getCreatedAt());
+        insuranceQuoteEntity.setUpdatedAt(insuranceQuote.getUpdatedAt());
 
         return insuranceQuoteEntity;
     }
