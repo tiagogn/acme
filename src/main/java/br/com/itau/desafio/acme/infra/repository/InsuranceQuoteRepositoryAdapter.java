@@ -54,7 +54,7 @@ public class InsuranceQuoteRepositoryAdapter implements InsuranceQuoteRepository
     }
 
     @Override
-    public Optional<InsuranceQuote> findByInsurancePolicyId(UUID insurancePolicyId) {
+    public Optional<InsuranceQuote> findByInsurancePolicyId(Integer insurancePolicyId) {
         var insuranceQuoteEntity = entityManager.createQuery("SELECT i FROM InsuranceQuoteEntity i WHERE i.insurancePolicyId = :insurancePolicyId", InsuranceQuoteEntity.class)
                 .setParameter("insurancePolicyId", insurancePolicyId)
                 .getResultStream()

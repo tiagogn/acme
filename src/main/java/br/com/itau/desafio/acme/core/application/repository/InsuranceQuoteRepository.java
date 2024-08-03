@@ -8,6 +8,6 @@ import java.util.UUID;
 public interface InsuranceQuoteRepository {
     void save(InsuranceQuote insuranceQuote);
     Optional<InsuranceQuote> findById(Integer id);
-    Optional<InsuranceQuote> findByInsurancePolicyId(UUID insurancePolicyId);
+    Optional<InsuranceQuote> findByInsurancePolicyId(Integer insurancePolicyId);
     boolean existsByProductIdAndOfferIdAndCustomerDocument(UUID productId, UUID offerId, String documentNumber);
 }

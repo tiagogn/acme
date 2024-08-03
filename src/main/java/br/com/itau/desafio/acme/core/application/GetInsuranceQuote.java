@@ -17,7 +17,7 @@ public class GetInsuranceQuote {
         this.insuranceQuoteRepository = insuranceQuoteRepository;
     }
 
-    public InsuranceQuote getByInsuranceId(UUID insurancePolicyId) {
+    public InsuranceQuote getByInsuranceId(Integer insurancePolicyId) {
         log.info("GetInsuranceQuote.getByInsuranceId: insurancePolicyId={}", insurancePolicyId);
         return insuranceQuoteRepository.findByInsurancePolicyId(insurancePolicyId).orElse(null);
     }
