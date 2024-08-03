@@ -2,7 +2,6 @@ package br.com.itau.desafio.acme.core.domain;
 
 import br.com.itau.desafio.acme.core.exception.InsuranceQuoteException;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 public class ValidateInsuranceQuoteService {
@@ -62,7 +61,7 @@ public class ValidateInsuranceQuoteService {
 
     private void validateTotalMonthlyPremiumAmount(InsuranceQuote insuranceQuote, Offer offer){
         if (insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMaxAmount()) > 0
-        && insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMinAmount()) < 0) {
+        || insuranceQuote.getTotalMonthlyPremiumAmount().compareTo(offer.getMonthlyPremiumAmount().getMinAmount()) < 0) {
             throw new InsuranceQuoteException("Total monthly premium amount is different from the offer");
         }
     }

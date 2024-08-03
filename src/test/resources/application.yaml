@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: acme
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    clean-disabled: false
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE: true
+
+server:
+  servlet:
+    context-path: /acme
+    application-display-name: Acme
+
+app:
+  catalog-service:
+    url: http://dummy-url.com/api/v1/catalog/
+  rabbit:
+    insurance-quote:
+      queue: insurance-quote.received
+    insurance-policy:
+      queue: insurance-policy.issued
+
