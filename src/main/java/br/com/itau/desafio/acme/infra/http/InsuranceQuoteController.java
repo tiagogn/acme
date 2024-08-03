@@ -29,8 +29,9 @@ public class InsuranceQuoteController {
     @PostMapping
     public ResponseEntity<InsuranceQuoteResponse> receiveInsuranceQuote(@RequestBody(required = true) InsuranceQuoteRequest insuranceQuoteRequest) {
         log.info("Received insurance quote: {}", insuranceQuoteRequest);
-        receivedInsuranceQuote.execute(insuranceQuoteRequest.toDomain());
-        return ResponseEntity.ok().build();
+        InsuranceQuote insuranceQuote = insuranceQuoteRequest.toDomain();
+        receivedInsuranceQuote.execute(insuranceQuote);
+        return ResponseEntity.ok(InsuranceQuoteResponse.fromDomain(insuranceQuote));
     }
 
     @GetMapping("{id}")

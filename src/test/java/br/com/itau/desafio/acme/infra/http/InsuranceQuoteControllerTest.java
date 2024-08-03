@@ -92,7 +92,8 @@ public class InsuranceQuoteControllerTest extends AcmeApplicationTests {
         mockMvc.perform(post("/api/v1/insurance-quote")
                         .content(body)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
